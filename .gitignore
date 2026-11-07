@@ -1,0 +1,44 @@
+# ---- Unity (game/) ----
+game/[Ll]ibrary/
+game/[Tt]emp/
+game/[Oo]bj/
+game/[Ll]ogs/
+game/[Uu]ser[Ss]ettings/
+game/[Mm]emoryCaptures/
+game/[Rr]ecordings/
+game/[Bb]uild/
+game/[Bb]uilds/
+game/*.csproj
+game/*.sln
+game/*.slnx
+game/*.suo
+game/*.user
+game/*.pidb
+game/*.booproj
+game/.vs/
+game/.vscode/
+game/*.apk
+game/*.aab
+game/crashlytics-build.properties
+game/Assets/StreamingAssets/aa/
+# Lisansı yalnızca yerel kullanıma izin veren dosyalar (Mixamo, Gumroad mocap vb.) buraya konur
+game/Assets/_Private/
+game/Assets/_Private.meta
+
+# ---- Derlenmiş oyun ----
+Builds/
+
+# ---- Node köprü ----
+bridge/node_modules/
+bridge/data/
+bridge/.env
+
+# ---- Yerel araçlar ve indirmeler ----
+tools/node/
+_downloads/
+_test-output/
+
+# ---- İşletim sistemi ----
+.DS_Store
+Thumbs.db
+desktop.ini

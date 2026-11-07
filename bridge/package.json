@@ -1,0 +1,17 @@
+{
+  "name": "dtk-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dünya Taraftar Kupası köprüsü: TikTok LIVE / simülatör olaylarını Unity oyununa WebSocket ile iletir, yayıncı panelini sunar.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

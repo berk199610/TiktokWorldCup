@@ -1,0 +1,4 @@
+# Yasaklı kelimeler — her satıra bir kelime yaz.
+# Ekrana yazılan bir kullanıcı adı bu kelimelerden birini içerirse ad "Taraftar" olarak gösterilir.
+# Büyük/küçük harf ve Türkçe karakter farkı önemli değildir (ş = s, ı = i ...).
+# '#' ile başlayan satırlar yok sayılır.

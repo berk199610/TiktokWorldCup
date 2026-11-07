@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yayıncı Paneli</title>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --line:#2a313c; --text:#e6edf3; --dim:#8b949e; --acc:#ffd23f; --ok:#3fb950; --bad:#f85149; --k1:#2f9e5b; --k2:#2f7ad9; --k3:#e8801f; --k4:#8f4ae0; --k5:#d6a419; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.4 system-ui, "Segoe UI", sans-serif; }
+  header { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:2; flex-wrap:wrap; }
+  header h1 { font-size:18px; margin:0; margin-right:auto; }
+  .pill { padding:4px 10px; border-radius:999px; background:var(--card); border:1px solid var(--line); font-size:13px; white-space:nowrap; }
+  .pill.ok { border-color:var(--ok); color:var(--ok); } .pill.bad { border-color:var(--bad); color:var(--bad); }
+  main { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; padding:14px 16px 40px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  h2 { font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--dim); margin:0 0 10px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; align-items:center; }
+  button { background:#21262d; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:9px 12px; font:inherit; cursor:pointer; }
+  button:hover { border-color:#58a6ff; } button:active { transform:translateY(1px); }
+  button.k1{background:var(--k1)} button.k2{background:var(--k2)} button.k3{background:var(--k3)} button.k4{background:var(--k4)} button.k5{background:var(--k5);color:#111}
+  button.warn { border-color:var(--bad); color:#ffb4ae; }
+  select, input[type=number] { background:#0d1117; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px; font:inherit; }
+  input[type=range] { width:100%; }
+  .score { font-size:28px; font-weight:800; letter-spacing:.02em; }
+  .muted { color:var(--dim); font-size:13px; }
+  ul { list-style:none; padding:0; margin:0; } li { padding:6px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:8px; }
+  .tier { font-weight:700; }
+  .bar { height:12px; border-radius:6px; overflow:hidden; background:#30363d; display:flex; margin-top:6px; }
+  .bar > div { height:100%; }
+</style>
+</head>
+<body>
+<header>
+  <h1>⚽ Dünya Taraftar Kupası — Yayıncı Paneli</h1>
+  <span id="game" class="pill bad">Oyun bağlı değil</span>
+  <span id="src" class="pill">Kaynak: —</span>
+  <span id="eps" class="pill">0 olay/sn</span>
+  <span id="fps" class="pill">FPS —</span>
+</header>
+<main>
+  <section>
+    <h2>Maç durumu</h2>
+    <div id="phase" class="muted">—</div>
+    <div class="score" id="score">— : —</div>
+    <div id="chance" class="muted"></div>
+    <div class="bar" id="cbar" style="display:none"><div id="cshot" style="background:#e5534b;width:50%"></div><div id="csave" style="background:#539bf5;width:50%"></div></div>
+    <div class="muted" id="extra"></div>
+  </section>
+
+  <section>
+    <h2>Teşekkür et (büyük hediyeler)</h2>
+    <ul id="thanks"><li class="muted">Henüz yok</li></ul>
+  </section>
+
+  <section>
+    <h2>Simülatör — kalabalık botu</h2>
+    <div class="row"><span>İzleyici sayısı: <b id="vval">0</b></span></div>
+    <input type="range" id="viewers" min="0" max="2000" step="5" value="0">
+    <div class="row" style="margin-top:8px">
+      <button data-v="0">Kapat</button><button data-v="5">5</button><button data-v="50">50</button>
+      <button data-v="200">200</button><button data-v="500">500</button><button data-v="2000">2000</button>
+    </div>
+    <div class="muted" id="botinfo"></div>
+  </section>
+
+  <section>
+    <h2>Simülatör — tek tek dene</h2>
+    <div class="row">
+      <label>Ülke</label>
+      <select id="country">
+        <option value="TR">🇹🇷 Türkiye</option><option value="VN">🇻🇳 Vietnam</option><option value="AZ">🇦🇿 Azerbaycan</option>
+        <option value="ID">🇮🇩 Endonezya</option><option value="BR">🇧🇷 Brezilya</option><option value="AR">🇦🇷 Arjantin</option>
+        <option value="MX">🇲🇽 Meksika</option><option value="MA">🇲🇦 Fas</option><option value="PK">🇵🇰 Pakistan</option>
+        <option value="PH">🇵🇭 Filipinler</option><option value="none">Takımsız izleyici</option>
+      </select>
+    </div>
+    <div class="row">
+      <button data-act="join">Bayrak yaz (katıl)</button>
+      <button data-act="comment">Yorum</button>
+      <button data-act="like" data-count="100">+100 beğeni</button>
+      <button data-act="like" data-count="1000">+1000 beğeni</button>
+    </div>
+    <div class="row">
+      <button class="k1" data-gift="1">K1 Pas (1)</button>
+      <button class="k1" data-gift="1" data-count="10">10 gül</button>
+      <button class="k2" data-gift="10">K2 Çalım (10)</button>
+      <button class="k3" data-gift="100">K3 Şut (100)</button>
+    </div>
+    <div class="row">
+      <button class="k4" data-gift="500">K4 Frikik (500)</button>
+      <button class="k4" data-gift="1500">K4 Füze (1500)</button>
+      <button class="k4" data-gift="3000">K4 Rövaşata (3000)</button>
+      <button class="k5" data-gift="5000">K5 Efsane (5000)</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Test senaryoları (DESIGN §16)</h2>
+    <div class="row">
+      <button data-act="whale">Balina (30.000 coin)</button>
+      <button data-act="storm">Hediye yağmuru (10×K4)</button>
+      <button data-act="spam">Yorum spamı (100 yorum)</button>
+      <button data-act="teamless">Takımsız gül</button>
+    </div>
+    <p class="muted">Seçili ülke adına çalışır.</p>
+  </section>
+
+  <section>
+    <h2>Yayıncı kontrolleri</h2>
+    <div class="row">
+      <button data-cmd="pause">⏸ Duraklat</button>
+      <button data-cmd="resume">▶ Devam</button>
+      <button data-cmd="skip">⏭ Bu aşamayı atla</button>
+    </div>
+    <div class="row">
+      <button data-cmd="reload">Ayarları yenile (config.json)</button>
+      <button data-cmd="fps">FPS göster/gizle</button>
+      <button data-cmd="screenshot">📸 Ekran görüntüsü</button>
+    </div>
+    <div class="row">
+      <input id="kickId" placeholder="kullanıcı id" style="flex:1;background:#0d1117;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px">
+      <button class="warn" id="kick">Oyundan çıkar</button>
+    </div>
+    <div class="muted" id="shots"></div>
+  </section>
+
+  <section>
+    <h2>En çok hediye (bu turnuva)</h2>
+    <ul id="top"><li class="muted">—</li></ul>
+  </section>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  let ws;
+  function connect() {
+    ws = new WebSocket(`ws://${location.host}/panel`);
+    ws.onmessage = (m) => { const d = JSON.parse(m.data); if (d.t === 'status') render(d); };
+    ws.onclose = () => { $('game').className = 'pill bad'; $('game').textContent = 'Köprü kapalı'; setTimeout(connect, 1500); };
+  }
+  connect();
+  const send = (o) => ws && ws.readyState === 1 && ws.send(JSON.stringify(o));
+  const country = () => $('country').value;
+  const phaseTr = { Registration: 'Kayıt', Draw: 'Kura', Match: 'Maç', Break: 'Ara', Ceremony: 'Tören' };
+
+  document.querySelectorAll('[data-act]').forEach((b) => b.onclick = () =>
+    send({ t: 'sim', action: b.dataset.act, country: country(), count: Number(b.dataset.count || 0) || undefined }));
+  document.querySelectorAll('[data-gift]').forEach((b) => b.onclick = () =>
+    send({ t: 'sim', action: 'gift', country: country(), unit: Number(b.dataset.gift), count: Number(b.dataset.count || 1) }));
+  document.querySelectorAll('[data-cmd]').forEach((b) => b.onclick = () => send({ t: 'cmd', cmd: b.dataset.cmd }));
+  document.querySelectorAll('[data-v]').forEach((b) => b.onclick = () => { $('viewers').value = b.dataset.v; setViewers(); });
+  $('viewers').oninput = setViewers;
+  function setViewers() { $('vval').textContent = $('viewers').value; send({ t: 'sim', action: 'bot', viewers: Number($('viewers').value) }); }
+  $('kick').onclick = () => { const id = $('kickId').value.trim(); if (id) send({ t: 'cmd', cmd: 'kick', arg: id }); };
+
+  function render(d) {
+    $('game').className = 'pill ' + (d.gameConnected ? 'ok' : 'bad');
+    $('game').textContent = d.gameConnected ? 'Oyun bağlı' : 'Oyun bağlı değil';
+    $('src').textContent = 'Kaynak: ' + (d.provider === 'tiktok' ? 'TikTok LIVE' + (d.tiktokConnected ? ' ✓' : ' (bağlanıyor)') : 'Simülatör');
+    $('eps').textContent = d.eventsPerSecond + ' olay/sn';
+    $('botinfo').textContent = `Simülatördeki izleyici: ${d.bot.fans}`;
+    if (document.activeElement !== $('viewers')) { $('viewers').value = d.bot.viewers; $('vval').textContent = d.bot.viewers; }
+    const s = d.state;
+    if (s) {
+      $('fps').textContent = 'FPS ' + s.fps;
+      $('phase').textContent = `${s.cup} · ${phaseTr[s.phase] || s.phase} · ${Math.max(0, Math.ceil(s.phaseLeft))} sn · ${s.fans} taraftar` + (s.paused ? ' · DURAKLATILDI' : '');
+      const m = s.match;
+      if (m) {
+        $('score').textContent = `${m.a} ${m.sa} : ${m.sb} ${m.b}`;
+        $('extra').textContent = `Dakika ${m.minute}' · top ${m.ball} · k=${m.k} · ort. güç ${s.avgGp}/sn` + (m.golden ? ' · ALTIN GOL' : '') + (m.pens ? ' · PENALTI' : '') +
+          (m.capA || m.capB ? ` · Kaptanlar: ${m.capA || '—'} / ${m.capB || '—'}` : '');
+        if (m.chance) {
+          $('cbar').style.display = 'flex';
+          const tot = m.chance.shot + m.chance.save;
+          $('cshot').style.width = (100 * m.chance.shot / tot) + '%';
+          $('csave').style.width = (100 * m.chance.save / tot) + '%';
+          $('chance').textContent = `POZİSYON: ${m.chance.atk === 0 ? m.a : m.b} şut ${m.chance.shot} — kurtarış ${m.chance.save} (${m.chance.left} sn)`;
+        } else { $('cbar').style.display = 'none'; $('chance').textContent = ''; }
+      } else { $('score').textContent = '— : —'; $('extra').textContent = ''; }
+      $('top').innerHTML = (s.top && s.top.length) ? s.top.map((f, i) => `<li><span>${i + 1}. ${esc(f.n)} ${f.team ? '(' + f.team + ')' : ''}</span><b>${f.c.toLocaleString('tr-TR')} coin</b></li>`).join('') : '<li class="muted">—</li>';
+    }
+    $('thanks').innerHTML = d.thanks.length ? d.thanks.map((t) => `<li><span>${esc(t.nickname)} ${t.team ? '(' + t.team + ')' : ''}</span><span class="tier">${t.tier >= 5 ? 'EFSANE' : 'YILDIZ'}</span></li>`).join('') : '<li class="muted">Henüz yok</li>';
+    $('shots').textContent = d.shots && d.shots.length ? 'Son görüntü: ' + d.shots[d.shots.length - 1] : '';
+  }
+  function esc(s) { return String(s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+* text=auto
+
+# Unity YAML
+*.unity    text eol=lf merge=unityyamlmerge
+*.prefab   text eol=lf merge=unityyamlmerge
+*.asset    text eol=lf merge=unityyamlmerge
+*.meta     text eol=lf
+*.mat      text eol=lf merge=unityyamlmerge
+*.anim     text eol=lf merge=unityyamlmerge
+*.controller text eol=lf merge=unityyamlmerge
+
+# Kod
+*.cs     text eol=lf diff=csharp
+*.shader text eol=lf
+*.hlsl   text eol=lf
+*.js     text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.html   text eol=lf
+*.bat    text eol=crlf
+
+# İkili dosyalar
+*.png  binary
+*.jpg  binary
+*.fbx  binary
+*.FBX  binary
+*.glb  binary
+*.ttf  binary
+*.otf  binary
+*.wav  binary
+*.mp3  binary
+*.ogg  binary
+*.zip  binary
+*.exe  binary

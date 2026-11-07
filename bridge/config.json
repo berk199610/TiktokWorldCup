@@ -1,0 +1,8 @@
+{
+  "port": 8787,
+  "provider": "simulator",
+  "tiktokUsername": "",
+  "eulerApiKey": "",
+  "logEvents": false,
+  "lan": false
+}
